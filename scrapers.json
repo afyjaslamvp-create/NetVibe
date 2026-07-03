@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "scrapers": [
+    {
+      "id": "vidsrc",
+      "name": "VidSrc",
+      "type": "embed",
+      "enabled": true,
+      "directUrl": "https://vidsrc.xyz/embed/{media_type}/{tmdb_id}"
+    },
+    {
+      "id": "embed_su",
+      "name": "EmbedSu",
+      "type": "embed",
+      "enabled": true,
+      "directUrl": "https://embed.su/embed/{media_type}/{tmdb_id}"
+    },
+    {
+      "id": "multiembed",
+      "name": "MultiEmbed",
+      "type": "embed",
+      "enabled": true,
+      "directUrl": "https://multiembed.mom/?video_id={tmdb_id}&tmdb=1"
+    },
+    {
+      "id": "superembed",
+      "name": "SuperEmbed",
+      "type": "embed",
+      "enabled": true,
+      "directUrl": "https://multiembed.mom/direct.php?video_id={tmdb_id}&tmdb=1"
+    },
+    {
+      "id": "vidsrc_proxy",
+      "name": "VidSrc Pro",
+      "type": "embed",
+      "enabled": true,
+      "directUrl": "https://vidsrc.to/embed/{media_type}/{tmdb_id}"
+    }
+  ],
+  "trackers": []
+}
