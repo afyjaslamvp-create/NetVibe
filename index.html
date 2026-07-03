@@ -278,19 +278,13 @@ body.ui-tv .movie-card:focus-visible .poster{ box-shadow:0 0 0 3px var(--brand-4
 
 <script>
 // ============================================================
-// CONFIG
+// CONFIG — all hardcoded, no user settings needed
 // ============================================================
-const storage = {
-    get(k, d) {
-        if (window.Android && window.Android.getPref) return window.Android.getPref(k, d)
-        return localStorage.getItem(k) || d
-    },
-    set(k, v) {
-        if (window.Android && window.Android.savePref) window.Android.savePref(k, v)
-        localStorage.setItem(k, v)
-    }
-}
-const KEY = storage.get('tmdb_key', 'b403bac81ca2635d0183091c867efd81')
+const GITHUB_OWNER = 'afyjaslamvp-create'
+const GITHUB_REPO = 'NetVibe'
+const GITHUB_PAGES = `https://${GITHUB_OWNER}.github.io/${GITHUB_REPO}`
+const GITHUB_RAW = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main`
+const KEY = 'b403bac81ca2635d0183091c867efd81'
 const API = 'https://api.themoviedb.org/3'
 const IMG = 'https://image.tmdb.org/t/p/w500'
 const IMG_O = 'https://image.tmdb.org/t/p/original'
@@ -322,7 +316,6 @@ const RAIL_ICONS = {
     film: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="7" y1="3" x2="7" y2="21"/><line x1="17" y1="3" x2="17" y2="21"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="15" x2="22" y2="15"/></svg>',
     tv: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 19v2"/></svg>',
     globe: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>',
-    settings: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0 .33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
 }
 
 // ============================================================
@@ -386,7 +379,6 @@ function detectMode() {
         render()
     }
 }
-// Call once from a settings screen or dev console to pin a device permanently, e.g. setDeviceMode('tv')
 function setDeviceMode(m) {
     if (m === 'auto') {
         localStorage.removeItem('netvibe_device_mode')
@@ -451,28 +443,14 @@ async function loadContent() {
 // SCRAPER CONFIG SYSTEM (remote-configurable)
 // ============================================================
 const DEFAULT_SCRAPER_CONFIG = {
-    version: 1,
+    version: 2,
     scrapers: [
         {
-            id: "vidsrc",
+            id: "vidsrc_xyz",
             name: "VidSrc",
             type: "embed",
             enabled: true,
-            directUrl: "https://vidsrc.to/embed/{media_type}/{tmdb_id}"
-        },
-        {
-            id: "vidsrc_proxy",
-            name: "VidSrc Pro",
-            type: "embed",
-            enabled: true,
             directUrl: "https://vidsrc.xyz/embed/{media_type}/{tmdb_id}"
-        },
-        {
-            id: "multiembed",
-            name: "MultiEmbed",
-            type: "embed",
-            enabled: true,
-            directUrl: "https://multiembed.mom/?video_id={tmdb_id}&tmdb=1"
         },
         {
             id: "embed_su",
@@ -482,6 +460,20 @@ const DEFAULT_SCRAPER_CONFIG = {
             directUrl: "https://embed.su/embed/{media_type}/{tmdb_id}"
         },
         {
+            id: "multiembed",
+            name: "MultiEmbed",
+            type: "embed",
+            enabled: true,
+            directUrl: "https://multiembed.mom/?video_id={tmdb_id}&tmdb=1"
+        },
+        {
+            id: "vidsrc_to",
+            name: "VidSrc 2",
+            type: "embed",
+            enabled: true,
+            directUrl: "https://vidsrc.to/embed/{media_type}/{tmdb_id}"
+        },
+        {
             id: "superembed",
             name: "SuperEmbed",
             type: "embed",
@@ -489,45 +481,35 @@ const DEFAULT_SCRAPER_CONFIG = {
             directUrl: "https://multiembed.mom/direct.php?video_id={tmdb_id}&tmdb=1"
         },
         {
-            id: "torrents_csv",
-            name: "Torrents CSV",
-            type: "torrent",
-            enabled: false,
-            maxResults: 20,
-            search: {
-                url: "https://torrents-csv.com/service/search?q={query}&size={limit}",
-                method: "GET",
-                timeout: 8000
-            },
-            parse: {
-                type: "json",
-                itemsPath: "torrents",
-                fields: { name: "name", infohash: "infohash", seeders: "seeders", size: "size_bytes" },
-                filter: { infohash: { required: true }, seeders: { min: 1 } }
-            }
+            id: "vidlink",
+            name: "VidLink",
+            type: "embed",
+            enabled: true,
+            directUrl: "https://vidlink.pro/{media_type}/{tmdb_id}"
+        },
+        {
+            id: "moviesapi",
+            name: "MoviesAPI",
+            type: "embed",
+            enabled: true,
+            directUrl: "https://moviesapi.club/{media_type}/{tmdb_id}"
         }
     ],
-    trackers: [
-        "http://tracker.bt4g.com:2095/announce",
-        "http://t.overflow.biz:6969/announce",
-        "udp://tracker.opentrackr.org:1337/announce",
-        "udp://tracker.leechers-paradise.org:6969/announce",
-        "wss://tracker.btorrent.xyz"
-    ]
+    trackers: []
 }
 
 let scraperConfig = null
 
 async function loadScraperConfig() {
-    const url = storage.get('scraper_config_url', '')
-    if (!url) { scraperConfig = DEFAULT_SCRAPER_CONFIG; return }
+    // Try fetching from GitHub repo first (user can update scrapers.json without rebuilding APK)
     try {
-        const r = await fetch(url, { signal: AbortSignal.timeout(10000) })
+        const r = await fetch(GITHUB_RAW + '/scrapers.json', { signal: AbortSignal.timeout(10000) })
         if (r.ok) {
             const cfg = await r.json()
             if (cfg && cfg.scrapers) { scraperConfig = cfg; return }
         }
     } catch(e) {}
+    // Fall back to bundled default
     scraperConfig = DEFAULT_SCRAPER_CONFIG
 }
 
@@ -763,9 +745,6 @@ function railHTML() {
             </div>
             ${items.map(it => `<button class="rail-item ${it.active?'active':''}" tabindex="0" onclick="state.railOpen=true;render();${it.onclick}">${RAIL_ICONS[it.icon]}<span>${it.label}</span></button>`).join('')}
         </div>
-        <div class="rail-bottom">
-            <button class="rail-item" tabindex="0" onclick="state.railOpen=true;render();showSettings()">${RAIL_ICONS.settings}<span>Settings</span></button>
-        </div>
     </aside>`
 }
 
@@ -774,7 +753,6 @@ function bottomNavHTML() {
         {icon:'home', label:'Home', onclick:"onTab('trending')", active: state.tab==='trending' && !state.lang && !state.dq},
         {icon:'search', label:'Search', onclick:"openMobileSearch()", active: state.mobileSearchOpen || !!state.dq},
         {icon:'globe', label:'Languages', onclick:"openLangSheet()", active: state.langSheetOpen || !!state.lang},
-        {icon:'settings', label:'Settings', onclick:"showSettings()", active:false},
     ]
     return `
     <nav class="phone-bottomnav">
@@ -824,7 +802,7 @@ function render() {
                 <p class="text-sm" style="color:var(--text-dim);margin-bottom:22px">Enter your TMDB API Key to begin</p>
                 <input id="keyInput" placeholder="Paste your key..." />
                 <button onclick="saveKey()" class="launch">Launch NetVibe</button>
-                <p class="text-xs mt-4" style="color:var(--text-faint)"><a href="https://themoviedb.org/settings/api" target="_blank" style="color:var(--brand-4)">Get a free key</a></p>
+                
             </div>
         </div>`
         return
@@ -862,7 +840,6 @@ function render() {
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                         </button>
                         <select onchange="onLang(this.value)" class="lang-pill desktop-lang">${ILANGS.map(l => '<option value="'+l.c+'" '+(l.c===state.lang?'selected':'')+'>'+l.l+'</option>').join('')}</select>
-                        <button onclick="showSettings()" class="icon-btn" title="Settings">${RAIL_ICONS.settings}</button>
                     </div>
                 </div>
                 <!-- Tabs -->
@@ -1032,48 +1009,6 @@ function playerModal() {
 // ============================================================
 // INTERACTIONS
 // ============================================================
-function saveKey() {
-    const i = $('#keyInput')
-    if (i) { storage.set('tmdb_key', i.value.trim()); location.reload() }
-}
-
-function showSettings() {
-    const currentScraperUrl = storage.get('scraper_config_url', '')
-    const currentGithubUrl = storage.get('github_pages_url', '')
-    const input = prompt(
-        '--- GitHub Pages URL (load app from here, updates on push) ---\n' +
-        '(leave blank to use bundled version)\n' +
-        'Current: ' + (currentGithubUrl || '(not set)') + '\n\n' +
-        '--- TMDB API Key ---\n' +
-        'Current: ' + KEY + '\n\n' +
-        '--- Scraper Config URL (leave blank for default) ---\n' +
-        'Current: ' + (currentScraperUrl || '(default)') + '\n\n' +
-        'Enter all values separated by newlines:\n' +
-        'Line 1: GitHub Pages URL (or blank)\n' +
-        'Line 2: TMDB API Key (or press Enter to keep)\n' +
-        'Line 3: Scraper Config URL (or blank)',
-        [currentGithubUrl, KEY, currentScraperUrl].join('\n')
-    )
-    if (input === null) return
-    const parts = input.split('\n')
-    const githubUrl = parts[0] || ''
-    const tmdbKey = parts[1] || ''
-    const scraperUrl = parts[2] || ''
-    // Save GitHub Pages URL
-    if (githubUrl !== currentGithubUrl) {
-        storage.set('github_pages_url', githubUrl)
-    }
-    // Save TMDB key
-    if (tmdbKey && tmdbKey !== KEY) {
-        storage.set('tmdb_key', tmdbKey)
-    }
-    // Save scraper config URL
-    if (scraperUrl !== currentScraperUrl) {
-        storage.set('scraper_config_url', scraperUrl)
-    }
-    location.reload()
-}
-
 function openMobileSearch() {
     state.mobileSearchOpen = true; render()
     setTimeout(() => { const el = $('#mobileSearchInput'); if (el) el.focus() }, 50)
@@ -1283,25 +1218,22 @@ document.addEventListener('click', (e) => {
 })
 
 // ============================================================
-// GITHUB PAGES AUTO-UPDATE SYSTEM
+// GITHUB PAGES AUTO-UPDATE
 // ============================================================
-// The app bundles the full webapp, but if the user sets a GitHub Pages URL
-// in settings, it redirects there on startup. Any push to GitHub updates
-// the GitHub Pages site — no reinstall needed.
-// The native window.Android bridge works on any URL the WebView loads,
-// so storage.get/set (which uses SharedPreferences) continues to work.
+// On startup, the app tries to load from GitHub Pages. If reachable,
+// it redirects there — any push to the repo updates the app instantly.
+// If GitHub Pages is unreachable (offline), the bundled version is used.
+// No backend, no user config needed.
 async function checkGitHubRedirect() {
-    const pagesUrl = storage.get('github_pages_url', '').replace(/\/+$/, '')
-    if (!pagesUrl) return false
-    // Avoid infinite redirect: if we're already on the GitHub URL, stop
-    if (location.href.startsWith(pagesUrl)) return false
-    // Quick reachability check before navigating
+    // Avoid infinite redirect: if we're already on the GitHub Pages URL, stop
+    if (location.href.startsWith(GITHUB_PAGES)) return false
+    // Quick reachability check before navigating to GitHub Pages
     try {
-        const resp = await fetch(pagesUrl + '/version.json', {
+        const resp = await fetch(GITHUB_PAGES + '/version.json', {
             method: 'HEAD', signal: AbortSignal.timeout(4000)
         })
         if (resp.ok) {
-            location.href = pagesUrl + '/index.html'
+            location.href = GITHUB_PAGES + '/index.html'
             return true
         }
     } catch {}
@@ -1312,10 +1244,8 @@ async function checkGitHubRedirect() {
 // INIT
 // ============================================================
 async function init() {
-    // Try redirecting to GitHub Pages first (user-configured)
     const redirected = await checkGitHubRedirect()
     if (redirected) return
-    // Fallback to bundled version
     await loadScraperConfig()
     detectMode()
     if (KEY) loadContent()

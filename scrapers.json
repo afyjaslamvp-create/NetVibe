@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "scrapers": [
     {
-      "id": "vidsrc",
+      "id": "vidsrc_xyz",
       "name": "VidSrc",
       "type": "embed",
       "enabled": true,
@@ -23,6 +23,13 @@
       "directUrl": "https://multiembed.mom/?video_id={tmdb_id}&tmdb=1"
     },
     {
+      "id": "vidsrc_to",
+      "name": "VidSrc 2",
+      "type": "embed",
+      "enabled": true,
+      "directUrl": "https://vidsrc.to/embed/{media_type}/{tmdb_id}"
+    },
+    {
       "id": "superembed",
       "name": "SuperEmbed",
       "type": "embed",
@@ -30,11 +37,18 @@
       "directUrl": "https://multiembed.mom/direct.php?video_id={tmdb_id}&tmdb=1"
     },
     {
-      "id": "vidsrc_proxy",
-      "name": "VidSrc Pro",
+      "id": "vidlink",
+      "name": "VidLink",
       "type": "embed",
       "enabled": true,
-      "directUrl": "https://vidsrc.to/embed/{media_type}/{tmdb_id}"
+      "directUrl": "https://vidlink.pro/{media_type}/{tmdb_id}"
+    },
+    {
+      "id": "moviesapi",
+      "name": "MoviesAPI",
+      "type": "embed",
+      "enabled": true,
+      "directUrl": "https://moviesapi.club/{media_type}/{tmdb_id}"
     }
   ],
   "trackers": []
